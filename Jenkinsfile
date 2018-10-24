@@ -13,6 +13,10 @@ node {
     env.BUILDIMG=imageName
     env.BUILD_TAG=tag
 
+    stage("php_lint") {
+        echo "### Check PHP files for errors ###"
+            sh 'find . -name "*.php" -print0 | xargs -0 -n1 php -l'
+     }
     stage ('Build') {
         echo "### Bulding docker image ###"
         sh "docker build -t ${imageName} -f applications/hello-kenzan/Dockerfile applications/hello-kenzan"
