@@ -12,7 +12,7 @@ node {
     imageName = "${registryHost}${appName}:${tag}"
     env.BUILDIMG=imageName
     env.BUILD_TAG=tag
-    def currentWorkingDirectory = pwd();
+    currentWorkingDirectory = pwd();
     stage("php_lint") {
         sh "find ${currentWorkingDirectory}/applications/hello-kenzan/test-php-files -name "*.php" -print0 | xargs -0 -n1 php -l"
      }
