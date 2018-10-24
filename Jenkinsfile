@@ -14,14 +14,17 @@ node {
     env.BUILD_TAG=tag
 
     stage ('Build') {
+        echo "Bulding docker image"
         sh "docker build -t ${imageName} -f applications/hello-kenzan/Dockerfile applications/hello-kenzan"
     }
     
     stage ('Push') {
+        echo "Pushing docker image"
         sh "docker push ${imageName}"
      }
 
     stage ('Deploy') {
+        echo "Deploying docker image"
         kubernetesDeploy configs: "applications/${appName}/k8s/*.yaml", kubeconfigId: 'kenzan_kubeconfig'
      }
 

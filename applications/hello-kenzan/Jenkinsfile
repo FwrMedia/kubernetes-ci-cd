@@ -5,17 +5,15 @@ node {
     env.DOCKER_API_VERSION="1.23"
     
     sh "git rev-parse --short HEAD > commit-id"
-    sh "minikube service registry --url > registryIpFile"
     registryIp = sh(returnStdout: true, script: "minikube service registry --url -n 1 --pretty=format:'%h'").trim()
     tag = readFile('commit-id').replace("\n", "").replace("\r", "")
     appName = "hello-kenzan"
-    registryHost = "127.0.0.1:30912/"
+    registryHost = "127.0.0.1:30400/"
     imageName = "${registryHost}${appName}:${tag}"
     env.BUILDIMG=imageName
 
     stage "Build"
-        echo "Registry host: ${registryHost}"
-        sh "docker build -t ${imageName} part1/hello-kenzan"
+        sh "docker build -t ${imageName} applications/hello-kenzan"
     
     stage "Push"
 
@@ -23,5 +21,5 @@ node {
 
     stage "Deploy"
 
-        sh "sed 's#__IMAGE__#'$BUILDIMG'#' part1/hello-kenzan/k8s/deployment.yaml | kubectl apply -f -"
+        sh "sed 's#__IMAGE__#'$BUILDIMG'#' applications/hello-kenzan/k8s/deployment.yaml | kubectl apply -f -"
 }
