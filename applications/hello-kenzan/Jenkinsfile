@@ -5,7 +5,8 @@ node {
     env.DOCKER_API_VERSION="1.23"
     
     sh "git rev-parse --short HEAD > commit-id"
-
+    sh "minikube service registry --url > registryIpFile"
+    registryIp = readFile('registryIpFile').replace("\n", "").replace("\r", "")
     tag = readFile('commit-id').replace("\n", "").replace("\r", "")
     appName = "hello-kenzan"
     registryHost = "127.0.0.1:30912/"
@@ -13,7 +14,7 @@ node {
     env.BUILDIMG=imageName
 
     stage "Build"
-    
+        echo "Registry host: $(registryHost)"
         sh "docker build -t ${imageName} part1/hello-kenzan"
     
     stage "Push"
