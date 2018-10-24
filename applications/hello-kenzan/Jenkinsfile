@@ -5,7 +5,6 @@ node {
     env.DOCKER_API_VERSION="1.23"
     
     sh "git rev-parse --short HEAD > commit-id"
-    registryIp = sh(returnStdout: true, script: "minikube service registry --url -n 1 --pretty=format:'%h'").trim()
     tag = readFile('commit-id').replace("\n", "").replace("\r", "")
     appName = "hello-kenzan"
     registryHost = "127.0.0.1:30400/"
