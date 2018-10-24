@@ -15,7 +15,7 @@ node {
 
     stage("php_lint") {
         echo "### Check PHP files for errors ###"
-            sh 'find . -name "*.php" -print0 | xargs -0 -n1 php -l'
+            sh 'find test-php-files -name "*.php" -print0 | xargs -0 -n1 php -l'
      }
     stage ('Build') {
         echo "### Bulding docker image ###"
