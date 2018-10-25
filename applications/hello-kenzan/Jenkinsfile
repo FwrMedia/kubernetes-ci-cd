@@ -12,8 +12,9 @@ node {
     env.BUILDIMG=imageName
     env.BUILD_TAG=tag
 
-    stage "Build"
+    stage ('Build') {
         sh "docker build -t ${imageName} applications/hello-kenzan"
+     }
     
     stage "Push"
 
